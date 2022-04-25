@@ -18,6 +18,8 @@
 | currency_unit | Unit of currency per country | object
 | year | Years between 2000 & 2019 | datetime64
 #### Real GDP, employment and population levels
+| Attribute | Definition | Data Type |
+| ----- | ----- | ----- |
 | rgdpe | Expenditure-side real GDP at chain PPPs (in mil. 2017USD) | object
 | rgdpo | Output-side real GDP at chained PPPs (in mil. 2017USD) | object
 | pop | Population (in millions) | object
@@ -25,6 +27,8 @@
 | avh | Average annual hours worked by persons engaged | float64
 | hc | Human capital index, based on years of schooling and returns to education | float64
 #### Current price GDP, capital and TFP
+| Attribute | Definition | Data Type |
+| ----- | ----- | ----- |
 | ccon | Real consumption of households and government, at current PPPs (in mil. 2017USD) | float64
 | cda | Real domestic absorption, (real consumption plus investment), at current PPPs (in mil. 2017USD) | float64
 | cgdpe | Expenditure-side real GDP at current PPPs (in mil. 2017USD) | float64
@@ -34,6 +38,8 @@
 | cftp | TFP level at current PPPs (USA=1) | object
 | cwtfp | Welfare-relevant TFP levels at current PPPs (USA=1) | object
 #### National accounts-based variables
+| Attribute | Definition | Data Type |
+| ----- | ----- | ----- |
 | rgdpna | Real GDP at constant 2017 national prices (in mil. 2017USD) | int64
 | rconna | Real consumption at constant 2017 national prices (in mil. 2017USD) | object
 | rdana | Real domestic absorption at constant 2017 national prices (in mil. 2017USD) | int64
@@ -45,11 +51,15 @@
 | irr | Real internal rate of return | int64
 | delta| Average depreciation rate of the capital stock | float64
 #### Exchange rates and GDP price levels
+| Attribute | Definition | Data Type |
+| ----- | ----- | ----- |
 | xr | Sales divided by quantity per order | float64
 | pl_con | Brand name extracted from product_name | object
 | pl_da | Time between order date and shipping date | int64
 | pl_gdpo | Month the order was placed | object
 ##### Data information variables
+| Attribute | Definition | Data Type |
+| ----- | ----- | ----- |
 | i_cig | 0/1/2/3/4: relative price data for consumption, investment and government is extrapolated (0), benchmark (1), interpolated (2), ICP PPP timeseries: benchmark or interpolated (3) or  ICP PPP timeseries: extrapolated (4) | int64
 | i_xm | 0/1/2: relative price data for exports and imports is extrapolated (0), benchmark (1) or interpolated (2) | float64
 | i_xr| 0/1: the exchange rate is market-based (0) or estimated (1) | float64
@@ -57,6 +67,8 @@
 | i_irr | 0/1/2/3: the observation for irr is not an outlier (0), may be biased due to a low capital share (1), hit the lower bound of 1 percent (2), or is an outlier (3) | int64
 | capital | share (1), hit the lower bound of 1 percent (2), or is an outlier (3) | object
 #### Shares in CGDPo
+| Attribute | Definition | Data Type |
+| ----- | ----- | ----- |
 | csh_c | Share of household consumption at current PPPs | int64
 | csh_i | Share of gross capital formation at current PPPs | float64
 | csh_g| Share of government consumption at current PPPs | float64
@@ -64,6 +76,8 @@
 | csh_m | Share of merchandise imports at current PPPs | int64
 | csh_r | Share of residual trade and GDP statistical discrepancy at current PPPs | float64
 #### Price levels, expenditure categories and capital
+| Attribute | Definition | Data Type |
+| ----- | ----- | ----- |
 | pl_c | Price level of household consumption,  price level of USA GDPo in 2017=1 | float64
 | pl_i | Price level of capital formation,  price level of USA GDPo in 2017=1 | object
 | pl_g | Price level of government consumption,  price level of USA GDPo in 2017=1 | int64
@@ -72,6 +86,8 @@
 | pl_n | Price level of the capital stock,  price level of USA GDPo in 2017=1 | object
 | pl_k | Price level of the capital services, price level of USA=1 | float64
 #### Suicide rates (per 100,000)
+| Attribute | Definition | Data Type |
+| ----- | ----- | ----- |
 | both_sexes | Suicide rates of both sexes | float64
 | females | Suicide rates of women | object
 | males | Suicide rates of men| float64
