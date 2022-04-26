@@ -1,6 +1,22 @@
 # Created by https://www.toptal.com/developers/gitignore/api/windows,jupyternotebooks,python,pycharm,pycharm+all
 # Edit at https://www.toptal.com/developers/gitignore?templates=windows,jupyternotebooks,python,pycharm,pycharm+all
 
+env.py
+.DS_Store
+.ipynb_checkpoints/
+__pycache__
+*.xlsx
+
+# MITO
+*/iframe_figures/
+*iframe_figures
+*iframe_figures/
+
+# CSV
+*.csv
+
+*lesson.ipynb
+
 ### JupyterNotebooks ###
 # gitignore template for Jupyter Notebooks
 # website: http://jupyter.org/
