@@ -66,3 +66,6 @@ pl_x	Price level of exports, price level of USA GDPo in 2017=1
 pl_m	Price level of imports, price level of USA GDPo in 2017=1
 pl_n	Price level of the capital stock, price level of USA in 2017=1
 pl_k	Price level of the capital services, price level of USA=1
+
+Features to eliminate following the heatmap observation:
+csh_m, xr, rkna, avh, hc, pop, csh_x, emp, pl_i, pl_n, pl_m, male, female

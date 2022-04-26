@@ -45,6 +45,17 @@ def prepare_data(df):
     # notes.md will explain why.
     df = df.drop(['i_cig', 'i_xm','i_xr', 'i_outlier', 'i_irr'], axis=1)
     df = df.astype({'both_sexes': 'float64', 'female': 'float64', 'male': 'float64'})
+    # the following was added during exploration, due to heatmap observations correlating to both_sexes.
+    # none were over a correlation of .37
+    elimination = ['csh_m', 'xr', 'rkna', 'avh', 'hc', 'pop', 'csh_x', 'emp', 'pl_i', 'pl_n',\
+                 'pl_m', 'male', 'female', 'countrycode', 'currency_unit']
+    # these were removed because they were all nearly perfectly correlated with CGDPe; the redundancy may cause 
+    # trouble for a model, and sicne they are essentially the same, there is no need to retain them. 
+    demolition = ['rgdpe', 'rgdpo', 'ccon', 'cda',  'cgdpo', 'cn', 'rgdpna', 'rdana', 'ck', 'rconna', 'rnna']
+    # add the lists to one another
+    dropit = demolition + elimination
+    df = df.drop(columns=dropit, axis=1)
+    
     return df
 
 def create_time_df(df):
