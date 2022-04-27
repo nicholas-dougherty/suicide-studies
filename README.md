@@ -53,10 +53,10 @@
 #### Exchange rates and GDP price levels
 | Attribute | Definition | Data Type |
 | ----- | ----- | ----- |
-| xr | Sales divided by quantity per order | float64
-| pl_con | Brand name extracted from product_name | float64
-| pl_da | Time between order date and shipping date | float64
-| pl_gdpo | Month the order was placed | float64
+| xr | Exchange rate, national currency/USD (market+estimated)| float64
+| pl_con | Price level of CCON (PPP/XR), price level of USA GDPo in 2017=1 | float64
+| pl_da | Price level of CDA (PPP/XR), price level of USA GDPo in 2017=1 | float64
+| pl_gdpo | Price level of CGDo (PPP/XR), price level of USA GDPo in 2017=1| float64
 ##### Data information variables
 | Attribute | Definition | Data Type |
 | ----- | ----- | ----- |
