@@ -35,7 +35,7 @@
 | cgdpo | Output-side real GDP at current PPPs (in mil. 2017USD) | float64
 | cn | Capital stock at current PPPs (in mil. 2017USD) | float64
 | ck | Capital services levels at current PPPs (USA=1) | float64
-| cftp | TFP level at current PPPs (USA=1) | float64
+| ctfp | TFP level at current PPPs (USA=1) | float64
 | cwtfp | Welfare-relevant TFP levels at current PPPs (USA=1) | float64
 #### National accounts-based variables
 | Attribute | Definition | Data Type |

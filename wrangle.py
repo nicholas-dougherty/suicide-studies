@@ -11,6 +11,34 @@ from sklearn.linear_model import LinearRegression, LassoLars, TweedieRegressor
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.metrics import explained_variance_score
 
+def wrangle_df2(target):
+    ''' 
+    '''
+    df, train, validate, test = wrangle_df()
+    # first drop the columns I won't be using and that are unscalable. 
+    train = train.drop(columns=(['country', 'year', 'year_int']))
+    validate = validate.drop(columns=(['country', 'year', 'year_int']))
+    test = test.drop(columns=(['country', 'year', 'year_int']))
+    
+    # split train into X (dataframe, drop target) & y (series, keep target only)
+    X_train = train.drop(columns=[target])
+    y_train = train[target]
+    
+    # split validate into X (dataframe, drop target) & y (series, keep target only)
+    X_validate = validate.drop(columns=[target])
+    y_validate = validate[target]
+    
+    # split test into X (dataframe, drop target) & y (series, keep target only)
+    X_test = test.drop(columns=[target])
+    y_test = test[target]
+    
+    # Change series into data frame for y 
+    y_train = pd.DataFrame(y_train)
+    y_validate = pd.DataFrame(y_validate)
+    y_test = pd.DataFrame(y_test)
+    
+    return train, validate, test, X_train, y_train, X_validate, y_validate, X_test, y_test
+
 def wrangle_df():
     df = prepare_data(acquire_data())
     df = create_time_df(df)
@@ -68,11 +96,19 @@ def create_time_df(df):
     
     # A particular approach to creating date time while avoiding pandas default to 1970
     df2['year'] = pd.to_datetime(df2['year'], format = "%Y").dt.strftime('%Y')
-    df2.year = pd.to_datetime(df2.year, infer_datetime_format = True)
+    # before adding additional elements I will create a column to be used as the index
+    df2['date_index'] = df2['year']
+    # guarantee it's a datetime 64 format
+    df2['year'] = df2['year'].apply(pd.to_datetime)
+    # create another as an int
+    df2['year_int'] = df2['year'].astype(str).str[0:4]
+    df2['year_int'] = df2['year_int'].astype(int)
+    # now play with date time so I can add hours and make it into a unique index
+    df2.date_index = pd.to_datetime(df2.date_index, infer_datetime_format = True)
     # add an hour to each recurrent year. 
-    df2['year'] = df2['year'] + pd.to_timedelta(df2.groupby('year').cumcount(), unit='h')
+    df2['date_index'] = df2['date_index'] + pd.to_timedelta(df2.groupby('date_index').cumcount(), unit='h')
     # set the index and sort it by date
-    df2 = df2.set_index('year').sort_index()
+    df2 = df2.set_index('date_index').sort_index()
     
     return df2
 
@@ -90,7 +126,7 @@ def split_time_with_val(df):
    splits the Superstore DF into Train Validate and Split; .5/.3/.2 respectively.
    Subsequently returns each.
     '''
-    print('Dataframe Input received: Splitting Data .5/.3/.2.')
+    #print('Dataframe Input received: Splitting Data .5/.3/.2.')
     train_size = int(len(df) * .5)
     validate_size = int(len(df) * .3)
     test_size = int(len(df) - train_size - validate_size)
@@ -100,8 +136,8 @@ def split_time_with_val(df):
     train_time = df[: train_size]
     validate_time = df[train_size : validate_end_index]
     test_time = df[validate_end_index : ]
-    print(f'Train: {train_time.shape}, Validate {validate_time.shape}, and Test {test_time.shape} are ready.\
-    \n Proceed with EDA.')
+    #print(f'Train: {train_time.shape}, Validate {validate_time.shape}, and Test {test_time.shape} are ready.\
+    #\n Proceed with EDA.')
     return train_time, validate_time, test_time
 
 # Keeping for my own records, but random selection of each is a bad idea when there's value gained from the time element. 
@@ -115,3 +151,23 @@ def split_time_with_val(df):
 #     
 #     
 #     return train, validate, test
+#
+
+#obsolete version, removed my ability to view year directly, without consideration of the index
+#def create_time_df(df):
+#    '''
+#    Takes in the suicide dataframe from prepare, creates a copy
+#    and then converts the year column from int to date-time format,
+#    with the unique year with hours timestamp set as the index.
+#    '''
+#    df2 = df.copy()
+#    
+#    # A particular approach to creating date time while avoiding pandas default to 1970
+#    df2['year'] = pd.to_datetime(df2['year'], format = "%Y").dt.strftime('%Y')
+#    df2.year = pd.to_datetime(df2.year, infer_datetime_format = True)
+#    # add an hour to each recurrent year. 
+#    df2['year'] = df2['year'] + pd.to_timedelta(df2.groupby('year').cumcount(), unit='h')
+#    # set the index and sort it by date
+#    df2 = df2.set_index('year').sort_index()
+#    
+#    return df2
