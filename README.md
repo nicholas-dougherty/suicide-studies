@@ -93,6 +93,7 @@
 | both_sexes | Suicide rates of both sexes | float64
 | female | Suicide rates of women | float64
 | male | Suicide rates of men| float64
+***
 
 ## Project Description and Goals
 <a name="project_description"></a>
@@ -104,12 +105,12 @@
 The target is the age-standardized suicide rate for both sexes among 15 countries. 
 Exploratory Data Analysis was conducted under the assumption that Purchasing Power Parity (PPP) would be the fairest way to compared rates across countries. The GHO and PWT aggregated Pandas DataFrame revealed that, after using Recursive Feature Elimination, the 8 PWT elements which were fed into several regression models, culminated in second-degree Polynomial Regression yielding a Root Mean Square Error of .48 and an explained variance of 99%. Assuming this was done correctly the features ['ctfp', 'cwtfp', 'rwtfpna', 'labsh', 'pl_con', 'pl_gdpo', 'pl_c', 'pl_g'] (see data dictionary) can be used to very accurately estimate a country's suicide rate. This goes to show that although suicide is a very delicate and difficult subject, with many elements that exist far outside the consideration of global economics, the state of a country's monetary affairs can be used to estimate the suicide rates within a country; this is aided by how suicide rates have been relatively stable across time. 
         
-
-# Project Planning
+***
+## Project Planning
 ## <a name="project_planning"></a>
 [[Back to top](#top)]
 
- **Plan** -> Acquire -> Prepare -> Explore 
+ **Plan** -> Acquire -> Prepare -> Explore -> Model -> Conclude
 
 - Project Planning:
     - Using my previous research from Scope and Methods in Political Science
@@ -146,16 +147,16 @@ Exploratory Data Analysis was conducted under the assumption that Purchasing Pow
 ### Initial Hypotheses
 - Countries with higher CGDPe and CGDPo per capita will carry a negative relationship, whereby in most cases these countries will have lower suicide rates per 100,000 than lower-ranking PPP polities. 
 - Suicide rates will not differ considerably among the country sample pool
-
-# Project Acquisition
+***
+## Project Acquisition
 <a name="project_acquisition"></a>
 [[Back to top](#top)]
 
- Plan -> **Acquire** -> Prepare -> Explore 
+ Plan -> **Acquire** -> Prepare -> Explore -> Model -> Conclude
 
 Functions used can be found in wrangle.py. 
 
-### The easiest way to follow along will be to clone this repository. 
+### **The easiest way to follow along will be to clone this repository**. 
 
 1. Sites for acquisition
 - The GGDC PTW [database](https://www.rug.nl/ggdc/productivity/pwt/?lang=en).
@@ -175,12 +176,12 @@ To avoid the rigors of creating this dataframe yourself by merging them, clone m
     
 2. Use pd.read_csv(). 
 
-
-# Project Preparation
+***
+## Project Preparation
 <a name="project_preparation"></a>
 [[Back to top](#top)]
 
- Plan -> Acquire -> **Prepare** -> Explore 
+ Plan -> Acquire -> **Prepare** -> Explore -> Model -> Conclude
 
 Functions used can be found in wrangle.py. 
 
@@ -200,11 +201,12 @@ df['avh'] = df.avh.fillna(df.avh.mean())
 ```
 
 There are essentially no outliers in this dataframe, so that was not an issue.
-# Project Exploration
+***
+## Project Exploration
 <a name="project_exploration"></a>
 [[Back to top](#top)]
 
- Plan -> Acquire -> Prepare -> **Explore** 
+ Plan -> Acquire -> Prepare -> **Explore** -> Model -> Conclude
 
 1. Questions we sought to address within Exploration: 
     - How have suicide rates varied over time?
@@ -219,20 +221,25 @@ There are essentially no outliers in this dataframe, so that was not an issue.
         - We failed to reject the null.  
     - Is the mean suicide rate in South Korea significantly different from all countries' mean?
         - We failed to reject the null
-        
+***
+## Project Modeling
 ## <a name="project_modeling"></a>
 [[Back to top](#top)]
 
-### Modeling      
+ Plan -> Acquire -> Prepare -> Explore-> **Model** -> Conclude
+     
 - Implemented a Min-Max Scaler
 - Established a baseline with the mean
 - Used Recursive Feature Elimination to select eight features 
 - Conducted OLS, Polynomial, Tweedie, Lasso+Lars, trying different parameters for each.
 Second-Degree Polynomial was wildly successful on test, with a RMSE of .48 and 99% explained variance. 
 
+***
+## Project Conclusion and Next Steps:
 ## <a name="project_conclusion"></a>
 [[Back to top](#top)]
-### Conclusion
+Plan -> Acquire -> Prepare -> Explore -> Model -> **Conclude**
+
 
 This research’s principle aim now is to generate a plan of action that will facilitate effective measurement of the relationships between the economic factors which may overtly lead to the Durkheimian models of isolation and despondency that blend into suicidality.       
 
