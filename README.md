@@ -5,6 +5,8 @@
 [[Project Acquisition](#project_acquisition)]
 [[Project Preparation](#project_preparation)]
 [[Project Exploration](#project_exploration)]
+[[Project Modeling](#project_modeling)]
+[[Project Conclusion](#project_conclusion)]
 
 
 ## Data Dictonary
@@ -95,24 +97,13 @@
 ## Project Description and Goals
 <a name="project_description"></a>
 
-- Project description:
-    - Obtain the superstore database as a team, select from the following prompts a mission:
-        - 1. CEO: Which customer segment is the best? 
-            - If we were going to shift our company to focus more specifically on one customer segment, which one should it be?
-        - 2. VP of Marketing: What should we market?
-            - We want to launch a new marketing campaign in the near future. How should we target with this campaign? Would you recomend targeting a specific type of customer, product line, or anything else?
-        - 3. VP of Sales: What should our sales goals for 2018 be?
-            - Are there any additional metrics should we track?
-        - 4. VP of Product: Which product line should we expand?
-            - Is there a product category that is particularly profitable for us? Does one or another stand out in terms of sales volume? Does this vary by customer segment?
-        - Data retrieved from Codeup's MySQL database using a query contained in pd.read_sql.
+- Project Description:
+ This repository guides through an analysis of databases from the World Health Organization's (WHO) Global Health Observatory (GHO) and the Groningen Growth and Development Centre's (GGDC) Penn World Table (PWT). The former records the suicide mortality rate (per 100,000 population) and the latter captures relative levels of income, output, input and productivity. The two databases were merged into a single pandas DataFrame, indexed by year. 
 
-- Goals:
-    - A python script or scripts that automate the data wrangling
-    - A notebook or notebooks that include a summary of your data wrangling and exploration
-    - A slide deck including an executive summary slide with your recomendations and rationale for them. This should include at least 2 visualizations suitable for presentation.
-    - A 5 minute presentation explaining our recomendation
-
+- Executive Summary:
+The target is the age-standardized suicide rate for both sexes among 15 countries. 
+Exploratory Data Analysis was conducted under the assumption that Purchasing Power Parity (PPP) would be the fairest way to compared rates across countries. The GHO and PWT aggregated Pandas DataFrame revealed that, after using Recursive Feature Elimination, the 8 PWT elements which were fed into several regression models, culminated in second-degree Polynomial Regression yielding a Root Mean Square Error of .48 and an explained variance of 99%. Assuming this was done correctly the features ['ctfp', 'cwtfp', 'rwtfpna', 'labsh', 'pl_con', 'pl_gdpo', 'pl_c', 'pl_g'] (see data dictionary) can be used to very accurately estimate a country's suicide rate. This goes to show that although suicide is a very delicate and difficult subject, with many elements that exist far outside the consideration of global economics, the state of a country's monetary affairs can be used to estimate the suicide rates within a country; this is aided by how suicide rates have been relatively stable across time. 
+        
 
 # Project Planning
 ## <a name="project_planning"></a>
@@ -120,22 +111,23 @@
 
  **Plan** -> Acquire -> Prepare -> Explore 
 
-- Tasking out how we plan to work through the pipeline.
-- We have elected to address the Vice President of Product's questions. 
-
-### Target variable
-- Profit/profit_per_product
-
-### Initial Focus
-- Find distinctions among the Furniture, Office Supplies, and Technology to see how the superstore is profiting from each; noticing trends with this approach will guide our process
-- Feature-engineer variables on a product-by-product basis, to show how much profit or sales are made in accordance with the quantity per order
-    - Ensure we observe whether or not a discount has been applied before considering a product or subcategory as a boon or blunder
-- Of course check immediately for data cleanliness and adjust accordingly.
+- Project Planning:
+    - Using my previous research from Scope and Methods in Political Science
+        - Collect Data on Suicide Rates and Global Financial Data for several countries
+        - Merge datasets while retaining as much information as possible
+        - Review Machine Learning methodology as this will be almost entirely continuous data
+        - Be sure to attribute the sources appropriately and leave ample markdown and code comments
+        - Aid the viewer every step of the way
+        - Although plenty of qualitative takeaways are already recorded, focus primarily on the quantitative elements here, objectively viewing suicide rates through monetary lenses.
+   - Using my training so far at Codeup
+       - Be rigorous and attentive to detail
+       - Be as detailed as possible without losing the audience's attention
+       - Show useful code, but don't feel the need to show everything, that's what .py is for
 
 
 ### Project Outline:
 - It generally goes like this: 
-- Acquisiton via Codeup Database
+- Acquisiton, in this case through website downloadable csv's
 - Preparation and pre-preocessing data using Pandas
     - Remove features
         - too many nulls?
@@ -148,13 +140,12 @@
 - Exploratory Data Analysis
      - Visualization using MatPlotLib and Seaborn
 - Statistical Testing
+- Scaling, Feature-Selection, Modeling
 - Conclude with the results.
 
-### Hypotheses
-- Technology is the most advantageous but underutilized category.
-- Technological product lines will be across-the-board worth expanding
-- Furniture has been a dangeous and failing pursuit for the superstore and may make its image suffer
-- Although most sales happen under office supplies, the profit potential for technology exceeds it. 
+### Initial Hypotheses
+- Countries with higher CGDPe and CGDPo per capita will carry a negative relationship, whereby in most cases these countries will have lower suicide rates per 100,000 than lower-ranking PPP polities. 
+- Suicide rates will not differ considerably among the country sample pool
 
 # Project Acquisition
 <a name="project_acquisition"></a>
@@ -164,44 +155,25 @@
 
 Functions used can be found in wrangle.py. 
 
-1. Acquire the superstore data from the from Codeup's MySQL server, then convert it into a Pandas DataFrame.
-```
-# If the cached parameter is True, read the csv file on disk in the same folder as this file 
-    if os.path.exists('superstore.csv') and use_cache:
-        print('Using cached CSV')
-        return pd.read_csv('superstore.csv')
+### The easiest way to follow along will be to clone this repository. 
 
-    # When there's no cached csv, read the following query from Codeup's MySQL database.
-    print('CSV not detected.')
-    print('Acquiring data from MySQL database instead.')
-    df = pd.read_sql(
-        '''
-SELECT * FROM orders 
-    JOIN customers USING (`Customer ID`)
-    JOIN products USING(`Product ID`)
-    JOIN categories USING (`Category ID`)
-    JOIN regions USING (`Region ID`);             
-        '''
-                    , get_db_url('superstore_db'))
+1. Sites for acquisition
+- The GGDC PTW [database](https://www.rug.nl/ggdc/productivity/pwt/?lang=en).
+    - *Follow the link, click Excel, import to GoogleSheets, and export as CSV*.  
+        - Attribution: Feenstra, Robert C., Robert Inklaar and Marcel P. Timmer (2015), "The Next Generation of the Penn World Table" American Economic Review, 105(10), 3150-3182, available for download at www.ggdc.net/pwt
+- The WHO GHO [database](https://www.rug.nl/ggdc/productivity/pwt/?lang=en).
+    - *Follow the link, download data as csv* 
+        - Attribution: World Health Organization. 2019. Global Health Observatory Country Views. 
     
-    
-    
-    print('Acquisition Complete. Dataframe available and is now cached for future use.')
-    # create a csv of the dataframe for the sake of efficiency. 
-    df.to_csv('superstore.csv', index=False)
-```
+To avoid the rigors of creating this dataframe yourself by merging them, clone my combined dataframe [here](https://github.com/nicholas-dougherty/suicide-studies/blob/main/combined.csv).  
 
-2. Observe the initial information
-    - TAKEAWAYS:
-        - There are no nulls and the date-time columns need to be converted to be used
-            - No major inconsistencies in the data, but the columns need to be renamed.
-```
-# Convert column names to snake_case
-    df.columns = [col.lower().replace(" ","_").replace("-","_") for col in df.columns]
-```
-
-    - There are redundant columns. Removing them is optional. 
-3. Used UDF describe data to closely inspect contents.
+##### The rationale for country selection
+- The United States as of 2020 ranks 28th in highest suicide rates in the world. 
+- I sought to obtain countries in equal number from Europe, Asia, and the Americas, with half ranking above and the other half ranking below. Originally I hoped to include Hong Kong and Taiwan, but since the former is a semi-autonomous region and the latter is still highly disputed in terms of its international role as a polity, I could not retrieve the information needed from both datasets. So I settled for China. Reliable data for South America is in scarce supply and only Cuba was usable, so the Americas only comprise Canada, United States, and Cuba in this dataframe. 
+    - The included countries which rank higher than US in this unfortunate dimension of suicide are: Greenland(1), South Korea(3), Kazakhstan(5), Ukraine(11), Japan(17), France(24), Finland(26)
+    - Those than rank lower are: Poland(29), Czech Republic(32), Cuba(33), Germany(33), Canada(43), (India(49), Singapore(51), China(54)
+    
+2. Use pd.read_csv(). 
 
 
 # Project Preparation
@@ -212,24 +184,22 @@ SELECT * FROM orders
 
 Functions used can be found in wrangle.py. 
 
-1. Clean-up:
-    - Take note of the engineered-features
-```
-# Calculate days between shipment and order placement
-    df['days_bw_shipment'] = df['ship_date'] - df['order_date']
-# add minutes to the order_date to avoid duplicate values
-    df['order_date_anew'] = df['order_date'] + pd.to_timedelta(df.groupby('order_date').cumcount(), unit='h')
-# Create product-based columns
-    df['profit_per_product'] = df.profit / df.quantity
-# add sales per product
-    df['sales_per_product'] = df.sales / df.quantity
+My User-Defined Function [describe_data()](https://github.com/nicholas-dougherty/suicide-studies/blob/main/describe.py) runs the gamut of describing the initial dataframe. It revealed that 6% of my data frame had missing values. The UDF [data_prep(df)](https://github.com/nicholas-dougherty/suicide-studies/blob/main/prepare.py) deleted the two columns which had more than half their values missing across columns and rows.       
+
+Given the nature of this information, and the high variability of this PWT's numbers, imputation could not be achieved across multiple columns, and there were only three countries responsible for the nulls. So I dropped them from the dataframe, as mentioned earlier.
 
 ```
-    - Extracting the brand name was tedious, but worked nevertheless. 
-    - Initially we split the data before exploration, but later saw this was futile.
-    - There was no modeling, and so we ultimately consolidated the test and train sets. 
-        - Although retroactively you could see it as us simply ompting not to split. 
-        
+# Lambda function returns all countries that are not equal to the unwanted three
+df = df[df['country'].apply(lambda val: all(val != s for s in ['Belarus', 'Bhutan', 'Guyana']))]
+```
+The only column still in need of having missing values addressed was the average workhours, which was handled by the mean after using seaborns distplots to observed the impact left by it, vs. mode or median. The only countries missing this value were Ukraine and Kazakhstan
+
+```
+# fill nas with mean
+df['avh'] = df.avh.fillna(df.avh.mean())
+```
+
+There are essentially no outliers in this dataframe, so that was not an issue.
 # Project Exploration
 <a name="project_exploration"></a>
 [[Back to top](#top)]
@@ -237,20 +207,42 @@ Functions used can be found in wrangle.py.
  Plan -> Acquire -> Prepare -> **Explore** 
 
 1. Questions we sought to address within Exploration: 
-    - Which product line should we expand? 
-    - Is there a product category that is particularly profitable for us? 
-    - Does one or another stand out in terms of sales volume? 
+    - How have suicide rates varied over time?
+    - Which features should immediately be dropped from consideration for having low correlation to our target?
+    - Which features should be dropped to avoid multicollinearity? 
+        - heatmaps helped with the second and third
+    - following this, do all features have a linear relationship with suicide-rates?
+    
 2. Hypothesis Testing
-                We rejected the null for each. 
-    - Is Furniture worth keeping under consideration? 
-        - No. Furniture profit on average is less than the overall profit avg. 
-    - Is Technology a worthwhile business venture? 
-        - Absolutely. Technology profit on average is far greater than overall profit avg. 
- CONCLUSION       
-3. Answers to the three questions. 
-    - Technology under the brands Ativa, Canon, and Konftel
-    - Technology invites a lot of room for business growth
-    - Office Supplies in their entirety far exceed the other two categories
+                We rejected the null for each continuous variable. 
+    - Is the mean suicide rate in South Korea significantly different from all countries' mean?
+        - We failed to reject the null.  
+    - Is the mean suicide rate in South Korea significantly different from all countries' mean?
+        - We failed to reject the null
+        
+## <a name="project_modeling"></a>
+[[Back to top](#top)]
 
+### Modeling      
+- Implemented a Min-Max Scaler
+- Established a baseline with the mean
+- Used Recursive Feature Elimination to select eight features 
+- Conducted OLS, Polynomial, Tweedie, Lasso+Lars, trying different parameters for each.
+Second-Degree Polynomial was wildly successful on test, with a RMSE of .48 and 99% explained variance. 
 
+## <a name="project_conclusion"></a>
+[[Back to top](#top)]
+### Conclusion
+
+This research’s principle aim now is to generate a plan of action that will facilitate effective measurement of the relationships between the economic factors which may overtly lead to the Durkheimian models of isolation and despondency that blend into suicidality.       
+
+RFE in conjunction with the results of machine learning insinuate that Total Factor Productivity (TFP)-level at current Purchasing Power Parities (PPP) __ctfp__, Welfare-relevant TFP levels at current PPPs __cwtfp__, Welfare-relevant TFP at Constant National Prices (CNP) __rwtfpna__, Share of labour compensation in Gross Domestic Product (GDP) at CNP __labsh__, Price level of Real consumption of households and governments(CCON) __pl_con__, Price-level of Output-side real GDP at current PPPs __pl_gdpo__, Price-level of household consumption __pl_c__, and price-level of government consumption __pl_g__ are collectively valuable estimators of suicide rates.
+This goes to show that although suicide is a very delicate and difficult subject, with many elements that exist far outside the consideration of global economics, the state of a country's monetary affairs can be used to estimate the suicide rates within a country; this is aided by how suicide rates have been relatively stable across time. 
+
+#### Actionable recommendations: 
+WHO publishes suicide rates every two-to-three years. Once the PWT and GHO data concerning the impact of COVID is present in both datasets, aggregate this data as well. 
+Because suicide rates have been relatively stable across time, the train, validate, test splits should not be too severely impacted, even with the anticipated changes of the upcoming data deluge. It is perhaps still wisest to index based on the years, so that each country's data is represented in totality. 
+To further test the limits of these models, more country's can be included, but certain categories may be lost. However, if these eight features at the very least are fully filled-out, then I have high hopes that a model will perform well. 
+
+Although time-series analysis was not performed in any meaningful way here, the index does suit it, and would be worth further investigation. 
 [[Back to top](#top)]
