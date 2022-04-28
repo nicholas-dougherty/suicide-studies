@@ -207,7 +207,7 @@ def test_lithuania(train):
     
     if p/2 > alpha:
         print("We fail to reject the Null Hypothesis")
-    elif t > 0:
+    elif t < 0:
         print("We fail to reject the Null Hypothesis")
     else:
         print("We reject the Null Hypothesis")
