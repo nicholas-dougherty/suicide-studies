@@ -33,35 +33,34 @@ def nulls_by_row(df):
 
 def describe_data(df):
     '''
-    This function takes in a pandas dataframe and prints out the shape, datatypes, number of missing values, 
-    columns and their data types, summary statistics of numeric columns in the dataframe, as well as the value counts for categorical variables.
+    This function takes in a Pandas DataFrame and prints out the shape,
+    datatypes, number of missing values, columns and their data types,
+    summary statistics of numeric columns in the dataframe,
+    as well as the value counts for categorical variables.
+    
+    --- nulls_by_col and nulls_by_row are UDFs present about this ---
     '''
     # Print out the "shape" of our dataframe - rows and columns
     print(f'This dataframe has {df.shape[0]} rows and {df.shape[1]} columns.')
-    print('')
-    print('--------------------------------------')
-    print('--------------------------------------')
+    # Double Line-breaks to enhance the output's readability
+    print(' ', '\n', '-' * 30, '\n', '-' * 30)
     
     # print the datatypes and column names with non-null counts
     print(df.info())
-    print('')
-    print('--------------------------------------')
-    print('--------------------------------------')
+    print(' ', '\n', '-' * 30, '\n', '-' * 30)
     
     
     # print out summary stats for our dataset
     print('Here are the summary statistics of our dataset')
     print(df.describe().applymap(lambda x: f"{x:0.3f}"))
-    print('')
-    print('--------------------------------------')
-    print('--------------------------------------')
+    print(' ', '\n', '-' * 30, '\n', '-' * 30)
 
     # print the number of missing values per column and the total
     print('Null Values by Column: ')
     missing_total = df.isnull().sum().sum()
     missing_count = df.isnull().sum() # the count of missing values
     value_count = df.isnull().count() # the count of all values
-    missing_percentage = round(missing_count / value_count * 100, 2) # percentage of missing values
+    missing_percentage = round(missing_count / value_count * 100, 2) # % of missing values
     missing_df = pd.DataFrame({'count': missing_count, 'percentage': missing_percentage})\
     .sort_values(by='percentage', ascending=False)
     
@@ -70,12 +69,11 @@ def describe_data(df):
     df_total = df.shape[0] * df.shape[1]
     proportion_of_nulls = round((missing_total / df_total), 4)
     print(f' Proportion of Nulls in Dataframe: {proportion_of_nulls}\n') 
-    print('--------------------------------------')
-    print('--------------------------------------')
+    print(' ', '\n', '-' * 30, '\n', '-' * 30)
     
     print('Row-by-Row Nulls')
     print(nulls_by_row(df))
-    print('----------------------')
+    print('-' * 30)
     
     print('Relative Frequencies: \n')
     ## Display top 5 values of each variable within reasonable limit
@@ -86,8 +84,7 @@ def describe_data(df):
         else: 
             print(f'Column: {col} \n')
             print(f'Range of Values: [{df[col].min()} - {df[col].max()}] \n')
-        print('------------------------------------------')
-        print('--------------------------------------')
+        print(' ', '\n', '-' * 30, '\n', '-' * 30)
         
 def nulls(df):
     '''
